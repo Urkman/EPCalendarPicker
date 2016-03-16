@@ -283,10 +283,14 @@ public class EPCalendarPicker: UICollectionViewController {
     override public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! EPCalendarCell1
         if !multiSelectEnabled {
-            calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate)
-            cell.selectedForLabelColor(dateSelectionColor)
-            dismissViewControllerAnimated(true, completion: nil)
-            return
+            if let selectable = cell.isCellSelectable {
+                if selectable {
+                    calendarDelegate?.epCalendarPicker!(self, didSelectDate: cell.currentDate)
+                    cell.selectedForLabelColor(dateSelectionColor)
+                    dismissViewControllerAnimated(true, completion: nil)
+                    return
+                }
+            }
         }
         
         if cell.isCellSelectable! {
